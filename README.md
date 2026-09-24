@@ -2,8 +2,7 @@
 A walkthrough of starting from scratch with Fine Tuning and what I learn.
 
 I first started with fine tuning from a simple tutorial. 
-**Starting with fine-tuning a ConvNet on image classification with ants and bees**<img width="469" height="192" alt="Screenshot 2026-09-24 at 11 18 34 AM" src="https://github.com/user-attachments/assets/3675717a-cc6b-4bfb-9367-a040252a596d" />
-
+**Starting with fine-tuning a ConvNet on image classification with ants and bees**
 
 <img width="477" height="96" alt="Screenshot 2026-09-24 at 11 16 36 AM" src="https://github.com/user-attachments/assets/df53cf90-47c6-44bb-8c63-99f326a9d4fd" />
 
