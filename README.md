@@ -16,7 +16,9 @@ It turns out the problem was in my code: I had written zero_grad instead of call
 
 imageNetFineTuning.ipynb
 
-**Can I fine-tune a model to classify medical images?** How accurate can it get?<img width="328" height="255" alt="Screenshot 2026-09-24 at 11 17 55 AM" src="https://github.com/user-attachments/assets/03286dff-dcfd-4b90-baf6-3c20e4e87622" />
+**Can I fine-tune a model to classify medical images?** How accurate can it get?
+
+<img width="328" height="255" alt="Screenshot 2026-09-24 at 11 17 55 AM" src="https://github.com/user-attachments/assets/03286dff-dcfd-4b90-baf6-3c20e4e87622" />
 
 For this experiment, I used BioMedCLIP and the MedMNIST BloodMNIST dataset.
 I started with closed-set zero-shot classification. Basically, I wanted to see how well BioMedCLIP could classify BloodMNIST’s eight cell types without training on those labels. I created a text prompt for each class, such as “a microscope image of a basophil,” and encoded those prompts alongside the images.
@@ -29,28 +31,7 @@ There could also be limitations in BioMedCLIP’s training data. For example, ma
 I tried shortening the prompts, but performance got worse. That made me think prompt wording was playing a role, although this experiment alone doesn’t tell me exactly why. In the end, zero-shot accuracy was 27%, and balanced accuracy was 20%.
 Then I tried something else. What if the image embeddings already contained information about the cell types, but my text prompts just weren’t bringing it out? I kept BioMedCLIP’s image encoder and trained a single linear layer to map its 512-dimensional image embeddings to the eight classes. That worked much better:
 
-Epoch 01/20 | Train Loss: 1.9024 | Train Acc: 0.3443 | Val Loss: 1.7903 | Val Acc: 0.5987
-Epoch 02/20 | Train Loss: 1.6947 | Train Acc: 0.6114 | Val Loss: 1.6017 | Val Acc: 0.6227
-Epoch 03/20 | Train Loss: 1.5206 | Train Acc: 0.6514 | Val Loss: 1.4414 | Val Acc: 0.6694
-Epoch 04/20 | Train Loss: 1.3737 | Train Acc: 0.6894 | Val Loss: 1.3055 | Val Acc: 0.7056
-Epoch 05/20 | Train Loss: 1.2492 | Train Acc: 0.7239 | Val Loss: 1.1898 | Val Acc: 0.7278
-Epoch 06/20 | Train Loss: 1.1437 | Train Acc: 0.7527 | Val Loss: 1.0919 | Val Acc: 0.7547
-Epoch 07/20 | Train Loss: 1.0537 | Train Acc: 0.7813 | Val Loss: 1.0101 | Val Acc: 0.7985
-Epoch 08/20 | Train Loss: 0.9771 | Train Acc: 0.8014 | Val Loss: 0.9393 | Val Acc: 0.8318
-Epoch 09/20 | Train Loss: 0.9111 | Train Acc: 0.8221 | Val Loss: 0.8752 | Val Acc: 0.8271
-Epoch 10/20 | Train Loss: 0.8537 | Train Acc: 0.8344 | Val Loss: 0.8215 | Val Acc: 0.8435
-Epoch 11/20 | Train Loss: 0.8035 | Train Acc: 0.8439 | Val Loss: 0.7738 | Val Acc: 0.8569
-Epoch 12/20 | Train Loss: 0.7590 | Train Acc: 0.8543 | Val Loss: 0.7339 | Val Acc: 0.8423
-Epoch 13/20 | Train Loss: 0.7204 | Train Acc: 0.8567 | Val Loss: 0.6947 | Val Acc: 0.8692
-Epoch 14/20 | Train Loss: 0.6854 | Train Acc: 0.8627 | Val Loss: 0.6611 | Val Acc: 0.8768
-Epoch 15/20 | Train Loss: 0.6541 | Train Acc: 0.8674 | Val Loss: 0.6312 | Val Acc: 0.8768
-Epoch 16/20 | Train Loss: 0.6259 | Train Acc: 0.8706 | Val Loss: 0.6045 | Val Acc: 0.8773
-Epoch 17/20 | Train Loss: 0.6007 | Train Acc: 0.8738 | Val Loss: 0.5805 | Val Acc: 0.8890
-Epoch 18/20 | Train Loss: 0.5775 | Train Acc: 0.8780 | Val Loss: 0.5587 | Val Acc: 0.8855
-Epoch 19/20 | Train Loss: 0.5565 | Train Acc: 0.8798 | Val Loss: 0.5373 | Val Acc: 0.8855
-Epoch 20/20 | Train Loss: 0.5373 | Train Acc: 0.8822 | Val Loss: 0.5185 | Val Acc: 0.8914
-
-Best validation accuracy: 0.8914
+<img width="446" height="322" alt="Screenshot 2026-09-24 at 11 19 50 AM" src="https://github.com/user-attachments/assets/1eefaa45-e86b-4f43-965b-27a3b31c6eef" />
 
 This was exciting! It suggests that BioMedCLIP’s image embeddings did contain useful information about the cells. Even though the text prompts only got me 27% accuracy, a single trained linear layer could use those embeddings to reach 89% validation accuracy. I still need to check how well it does on a separate test set.
 
